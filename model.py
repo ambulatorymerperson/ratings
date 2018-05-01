@@ -23,7 +23,7 @@ class User(db.Model):
     age = db.Column(db.Integer, nullable=True)
     zipcode = db.Column(db.String(15), nullable=True)
 
-    
+
 
 
 class Movie(db.Model):
@@ -32,7 +32,7 @@ class Movie(db.Model):
     __tablename__ = "movies"
 
     movie_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    title = db.Column(db.String(69))
+    title = db.Column(db.String(150))
     released_at = db.Column(db.DateTime, nullable=True)
     imdb_url = db.Column(db.String(150), nullable=True)
 
@@ -42,10 +42,10 @@ class Rating(db.Model):
     __tablename__ = "ratings"
 
     rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    movie_id = db.Column(db.Integer, nullable=True)
+    movie_id = db.Column(db.Integer)
     user_id = db.Column(db.Integer, nullable=True)
     score = db.Column(db.Integer, nullable=True)    
-
+    timestamp = db.Column(db.DateTime, nullable=True)
 
 ##############################################################################
 # Helper functions
