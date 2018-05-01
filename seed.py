@@ -23,9 +23,7 @@ def load_users():
         row = row.rstrip()
         user_id, age, gender, occupation, zipcode = row.split("|")
 
-        user = User(user_id=user_id,
-                    age=age,
-                    zipcode=zipcode)
+        user = User(user_id=user_id, age=age, zipcode=zipcode)
 
         # We need to add to the session or it won't ever be stored
         db.session.add(user)
@@ -50,8 +48,8 @@ def load_movies():
             released_at = datetime.strptime(released_at, "%d-%b-%Y")
         else:
             released_at = None
-
-        title = title[:-6]
+        # release_year = title(-6:-1)
+        title = title[:-7]
         title = title.decode("latin-1")
 
         movie = Movie(movie_id=movie_id, title=title, released_at=released_at, imdb_url=imdb_url)

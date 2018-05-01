@@ -23,7 +23,10 @@ class User(db.Model):
     age = db.Column(db.Integer, nullable=True)
     zipcode = db.Column(db.String(15), nullable=True)
 
+    def __repr__(self):
+        """Provide helpful representation when printed."""
 
+        return "<user_id={} email={} age={}>".format(self.user_id, self.email, self.age)
 
 
 class Movie(db.Model):
@@ -36,16 +39,38 @@ class Movie(db.Model):
     released_at = db.Column(db.DateTime, nullable=True)
     imdb_url = db.Column(db.String(150), nullable=True)
 
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<movie_id={} title={} released_at={} imdb_url={}>".format(self.movie_id,
+                                                                           self.title,
+                                                                           self.released_at, self.imdb_url)
+
 class Rating(db.Model):
     """Rating Info for Movies"""
 
     __tablename__ = "ratings"
 
     rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    movie_id = db.Column(db.Integer)
-    user_id = db.Column(db.Integer, nullable=True)
+    movie_id = db.Column(db.Integer, db. ForeignKey('movies.movie_id'))
+    user_id = db.Column(db.Integer, db. ForeignKey('users.user_id'))
     score = db.Column(db.Integer, nullable=True)    
-    timestamp = db.Column(db.DateTime, nullable=True)
+    
+    # Define relationship to user
+    user = db.relationship("User",
+                           backref=db.backref("ratings",
+                                              order_by=rating_id))
+
+    # Define relationship to movie
+    movie = db.relationship("Movie",
+                            backref=db.backref("ratings",
+                                               order_by=rating_id))
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Rating rating_id={} movie_id={} user_id={} score={}>".format(self.rating_id,
+                                                                           self.movie_id,
+                                                                           self.user_id, self.score)
 
 ##############################################################################
 # Helper functions
