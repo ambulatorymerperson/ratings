@@ -3,7 +3,7 @@
 from jinja2 import StrictUndefined
 
 from flask import (Flask, render_template, redirect, request, flash,
-                   session)
+                   session, copy_current_request_context)
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import User, Rating, Movie, connect_to_db, db
@@ -65,15 +65,44 @@ def login_form():
 
 @app.route("/login", methods=["POST"])
 def login():
-
+#    @copy_current_request_context
+ #   def more_login():
     email_input = request.form['email_input']
     pw_input = request.form['pw_input']
 
-    if User.query.filter(email == email_input, password == pw_input).all() != []:
+    if User.query.filter(User.email == email_input, User.password == pw_input).all() != []:
+        session['current_user'] = email_input
+        print session['current_user']
         flash('You were successfully logged in')
         return redirect("/")
+    else:
+        flash('Your e-mail or password was incorrect! Please try again or Register.')
+        return render_template("log_in.html")
 
-    return render_template("log_in.html")
+@app.route("/user_info/<user_id>", methods=["GET"])
+def show_info():
+    # user_name = User.query.filter_by(user_id=)
+    # age =
+    # zipcode =
+    # movies =
+    # scores =
+
+    return render_template("log_in.html", user_name=user_name, age=age, zipcode=zipcode, movies=movies, scores = scores)
+
+
+
+@app.route("/logout")
+def logout():
+    del session['current_user']
+
+
+    flash('Byyyyyyyyyyyyyyyyyyyyyyyyyyyye. You have been succesfully logged out!')
+    return redirect ("/login")
+
+
+
+
+
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
