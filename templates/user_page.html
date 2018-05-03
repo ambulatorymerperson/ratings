@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<a href="/users">Back to all users</a><br>
+<a href="/">Back to home page!</a>
+<!-- User , age, zipcode, list of movies they rates and scores-->
+<h2>User {{ user_id }}</h2>
+<h3>Age: {{ age }}</h3>
+<p>Zipcode: {{ zipcode }}<p>
+
+
+<h3>Movie: User {{ user_id }}'s Score</h3>
+	{% for movie in movie_scores %}
+
+		<ul>
+			<li>{{movie[0]}}: {{movie[1]}}</li>
+		</ul>
+	{% endfor %}
+
+
+
+{% endblock %}

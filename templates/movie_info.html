@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<a href="/movies">Back to all movies</a><br>
+<a href="/">Back to home page!</a>
+<!-- User , age, zipcode, list of movies they rates and scores-->
+<h2>Movie Title {{ movie_lst.title }}</h2>
+<h3> Released in {{ movie_lst.released_at }}</h3>
+<p>IMDB:  {{ movie_lst.imdb_url }}<p>
+
+
+<h3>User: Score &nbsp  Average Score: {{ average_rating }}</h3>
+	{% for movie in movie_scores %}
+
+		<ul>
+			<li>{{movie[0]}}: {{movie[1]}}</li>
+		</ul>
+	{% endfor %}
+
+
+
+
+{% endblock %}
