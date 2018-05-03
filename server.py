@@ -89,7 +89,8 @@ def show_info(user_number):
     movies = []
     scores =[]
     for m in rating_info:
-        movie_scores += [(m.movie_id, m.score)]
+        m_title = Movie.query.filter_by(movie_id = m.movie_id).one()
+        movie_scores += [(m_title.title , m.score)]
     return render_template("user_page.html", user_id=user_number, age=age, zipcode=zipcode, movie_scores=movie_scores)
 
 
@@ -104,6 +105,28 @@ def logout():
 
 
 
+@app.route("/movies")
+def show_movie_list():
+
+    movie_lst = Movie.query.all()
+    return render_template("moviespage.html", movie_lst=movie_lst)
+
+@app.route("/movie_info/<movie_num>")
+def show_movie_details(movie_num):
+
+    movie_lst = Movie.query.filter_by(movie_id = movie_num).first()
+    rating_info = Rating.query.filter_by(movie_id = movie_num).all()
+    movie_scores = []
+    score_nums = []
+    for m in rating_info:
+        movie_scores += [(m.user_id , m.score)]
+        score_nums += [m.score]
+
+    movie_lst.released_at = str(movie_lst.released_at)[:4]    
+
+    average_rating = round(float(sum(score_nums))/len(score_nums),2)
+
+    return render_template("movie_info.html", movie_lst=movie_lst, movie_scores=movie_scores, average_rating=average_rating)
 
 
 
