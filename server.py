@@ -79,15 +79,18 @@ def login():
         flash('Your e-mail or password was incorrect! Please try again or Register.')
         return render_template("log_in.html")
 
-@app.route("/user_info/<user_id>", methods=["GET"])
-def show_info():
-    # user_name = User.query.filter_by(user_id=)
-    # age =
-    # zipcode =
-    # movies =
-    # scores =
-
-    return render_template("log_in.html", user_name=user_name, age=age, zipcode=zipcode, movies=movies, scores = scores)
+@app.route("/user_info/<user_number>", methods=["GET"])
+def show_info(user_number):
+    user_info = User.query.filter_by(user_id=user_number).one()
+    age = user_info.age
+    zipcode = user_info.zipcode
+    rating_info = Rating.query.filter_by(user_id=user_number).all()
+    movie_scores = []
+    movies = []
+    scores =[]
+    for m in rating_info:
+        movie_scores += [(m.movie_id, m.score)]
+    return render_template("user_page.html", user_id=user_number, age=age, zipcode=zipcode, movie_scores=movie_scores)
 
 
 
